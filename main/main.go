@@ -1,37 +1,36 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
+	"log"
+	"net/http"
 
-	_ "github.com/lib/pq"
-)
-
-const (
-	host = "localhost"
+	"github.com/gorilla/mux"
+	"github.com/humberto1212/go-refreshment/handlefuncs"
 )
 
 func main() {
-	// connection string
-	psqlconst := fmt.Sprintf("host=%s port=%d user=%s dbname=%s sslmode=disable", host, port, user, dbname)
 
-	// open database
-	db, err := sql.Open("postgres", psqlconst)
-	CheckError(err)
+	// // check db
+	// err = db.Ping()
+	// CheckError(err)
 
-	// close database
-	defer db.Close()
+	// create table
+	// createTable := `CREATE TABLE IF NOT EXISTS Customers (ID INT PRIMARY KEY, Name TEXT, Role TEXT, Email TEXT, Phone TEXT, Contacted BOOL);`
+	// _, e := db.Exec(createTable)
+	// CheckError(e)
 
-	// check db
-	err = db.Ping()
-	CheckError(err)
+	// ===============================
+	// insert
+	// hardcoded values in the table
+	// ===============================
+	// insertStmt := `insert into "customers"(id, "name", "role", "email", "phone", "contacted") values(1, 'Jacob', 'Manager', 'jm@gmail.com', '0157-22244', true )`
+	// _, e = db.Exec(insertStmt)
+	// CheckError(e)
 
-	fmt.Println("Connected!")
+	router := mux.NewRouter().StrictSlash(true)
+	router.HandleFunc("/allCustomers", handlefuncs.GetAllCustomers).Methods("GET")
 
-}
-
-func CheckError(err error) {
-	if err != nil {
-		panic(err)
-	}
+	fmt.Println("Server is starting on port 8000...")
+	log.Fatal(http.ListenAndServe(":8000", router))
 }
