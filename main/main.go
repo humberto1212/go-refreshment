@@ -30,6 +30,7 @@ func main() {
 
 	router := mux.NewRouter().StrictSlash(true)
 	router.HandleFunc("/allCustomers", handlefuncs.GetAllCustomers).Methods("GET")
+	router.HandleFunc("/allCustomers/{id}", handlefuncs.GetSingleCustomer).Methods("GET")
 
 	fmt.Println("Server is starting on port 8000...")
 	log.Fatal(http.ListenAndServe(":8000", router))
