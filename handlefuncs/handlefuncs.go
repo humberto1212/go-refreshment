@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"strconv"
 
 	"github.com/gorilla/mux"
 	"github.com/humberto1212/go-refreshment/models"
@@ -61,16 +60,7 @@ func GetAllCustomers(w http.ResponseWriter, _ *http.Request) {
 func GetSingleCustomer(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("conten-type", "aplication/json")
 
-	idStirng := mux.Vars(r)["id"]
-
-	id, err := strconv.Atoi(idStirng)
-
-	if err != nil {
-		fmt.Println("Error during conversion")
-		return
-	}
-
-	fmt.Println("++++++++++++++++///+>", id)
+	id := mux.Vars(r)["id"]
 
 	db := psqlDb.Connect()
 	defer db.Close()
@@ -105,5 +95,79 @@ func GetSingleCustomer(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), 500)
 		return
 	}
+
+}
+
+//============================
+// 		Delete customer
+//============================
+func DeleteCustomer(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	id := mux.Vars(r)["id"]
+
+	db := psqlDb.Connect()
+	defer db.Close()
+	//check db
+	errdb := db.Ping()
+	if errdb != nil {
+		panic(errdb)
+	}
+
+	rows, err := db.Query(`DELETE FROM customers where id=$1`, id)
+	if err != nil {
+
+		panic(err)
+	}
+
+	customer := models.Customer{}
+
+	for rows.Next() {
+		err = rows.Scan(&customer.ID, &customer.Name, &customer.Role, &customer.Email, &customer.Phone, &customer.Contacted)
+
+		if err != nil {
+			fmt.Println(err)
+		}
+	}
+
+	w.WriteHeader(http.StatusOK)
+}
+
+//============================
+// 		Create customer
+//============================
+func CreateCustomer(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	db := psqlDb.Connect()
+	defer db.Close()
+	//check db
+	errdb := db.Ping()
+	if errdb != nil {
+		panic(errdb)
+	}
+
+	var customer map[string]interface{}
+
+	err := json.NewDecoder(r.Body).Decode(&customer)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	c_name := "\"" + customer["name"].(string) + "\""
+	c_role := "\"" + customer["role"].(string) + "\""
+	c_email := "\"" + customer["email"].(string) + "\""
+	c_phone := "\"" + customer["phone"].(string) + "\""
+	fmt.Print(c_name)
+
+	insertCustomer := `INSERT INTO customers("id, "name", "role", "email", "phone", "contacted") VALUES($1, $2, $3, $4, $5, $6)`
+	_, insertError := db.Exec(insertCustomer, customer["id"].(float64), c_name, c_role, c_email, c_phone, customer["contacted"].(bool))
+	//_, insertError := db.Exec(insertCustomer, customer["id"].(float64), customer["name"].(string), customer["role"].(string), customer["email"].(string), customer["phone"].(string), customer["contacted"].(bool))
+	if insertError != nil {
+		fmt.Println(err)
+		panic(err)
+	}
+
+	fmt.Print("==================================")
 
 }
