@@ -135,8 +135,11 @@ func DeleteCustomer(w http.ResponseWriter, r *http.Request) {
 //============================
 // 		Create customer
 //============================
+
 func CreateCustomer(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
+
+	fmt.Println("++++++++++++++++++++++++++++")
 
 	db := psqlDb.Connect()
 	defer db.Close()
@@ -154,20 +157,18 @@ func CreateCustomer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	c_name := "\"" + customer["name"].(string) + "\""
-	c_role := "\"" + customer["role"].(string) + "\""
-	c_email := "\"" + customer["email"].(string) + "\""
-	c_phone := "\"" + customer["phone"].(string) + "\""
-	fmt.Print(c_name)
+	c_name := customer["name"].(string)
+	c_role := customer["role"].(string)
+	c_email := customer["email"].(string)
+	c_phone := customer["phone"].(string)
 
-	insertCustomer := `INSERT INTO customers("id, "name", "role", "email", "phone", "contacted") VALUES($1, $2, $3, $4, $5, $6)`
+	insertCustomer := `INSERT INTO customers(id, "name", "role", "email", "phone", "contacted") VALUES($1, $2, $3, $4, $5, $6)`
 	_, insertError := db.Exec(insertCustomer, customer["id"].(float64), c_name, c_role, c_email, c_phone, customer["contacted"].(bool))
-	//_, insertError := db.Exec(insertCustomer, customer["id"].(float64), customer["name"].(string), customer["role"].(string), customer["email"].(string), customer["phone"].(string), customer["contacted"].(bool))
+	//_, insertError := db.Exec(insertCustomer, 1, "Humberto", "Programer", "tt@gmail.com", "1234", true)
 	if insertError != nil {
-		fmt.Println(err)
 		panic(err)
 	}
 
-	fmt.Print("==================================")
+	w.WriteHeader(http.StatusOK)
 
 }
