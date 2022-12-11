@@ -23,7 +23,7 @@ The project represents the backend of a customer relationship management (CRM) w
 
 - Creates a database with your username, password and the rest of your information
 
-- Add an `env.` file and add the next keys with your respective values.
+- Add an `.env` file and add the next keys with your respective values.
     -   HOST=localhost
         PORT=5432
         USER=XXX
