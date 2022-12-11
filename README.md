@@ -21,6 +21,13 @@ The project represents the backend of a customer relationship management (CRM) w
 ### Instructions:
 - [install PostgreSQL ](https://www.postgresql.org/download/)
 
+- add an `env.` file and add the next keys with your respective values.
+    -   HOST=localhost
+        PORT=5432
+        USER=XXX
+        DBNAME=XXX
+        PASSWORD=XXX
+
 - In the terminal run `go run main.go`, this start the server.
 
 - Open (http://localhost:8000) or use [postman](https://www.postman.com/)
