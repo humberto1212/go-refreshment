@@ -135,11 +135,8 @@ func DeleteCustomer(w http.ResponseWriter, r *http.Request) {
 //============================
 // 		Create customer
 //============================
-
 func CreateCustomer(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-
-	fmt.Println("++++++++++++++++++++++++++++")
 
 	db := psqlDb.Connect()
 	defer db.Close()
@@ -161,14 +158,59 @@ func CreateCustomer(w http.ResponseWriter, r *http.Request) {
 	c_role := customer["role"].(string)
 	c_email := customer["email"].(string)
 	c_phone := customer["phone"].(string)
+	c_contactes := customer["contacted"].(bool)
+	c_id := customer["id"].(float64)
 
 	insertCustomer := `INSERT INTO customers(id, "name", "role", "email", "phone", "contacted") VALUES($1, $2, $3, $4, $5, $6)`
-	_, insertError := db.Exec(insertCustomer, customer["id"].(float64), c_name, c_role, c_email, c_phone, customer["contacted"].(bool))
-	//_, insertError := db.Exec(insertCustomer, 1, "Humberto", "Programer", "tt@gmail.com", "1234", true)
+	_, insertError := db.Exec(insertCustomer, c_id, c_name, c_role, c_email, c_phone, c_contactes)
 	if insertError != nil {
 		panic(err)
 	}
 
 	w.WriteHeader(http.StatusOK)
 
+}
+
+//============================
+// 		Updatecs customer
+//============================
+func UpdateCustomer(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	id := mux.Vars(r)["id"]
+
+	db := psqlDb.Connect()
+	defer db.Close()
+	//check db
+	errdb := db.Ping()
+	if errdb != nil {
+		panic(errdb)
+	}
+
+	var customer map[string]interface{}
+
+	err := json.NewDecoder(r.Body).Decode(&customer)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	c_name := customer["name"].(string)
+	c_role := customer["role"].(string)
+	c_email := customer["email"].(string)
+	c_phone := customer["phone"].(string)
+	c_contacted := customer["contacted"].(bool)
+
+	updateCustomer := `UPDATE customers SET name=$2, role=$3, email=$4, phone=$5, contacted=$6 WHERE id=$1;`
+	_, updateError := db.Exec(updateCustomer, id, c_name, c_role, c_email, c_phone, c_contacted)
+	if updateError != nil {
+		panic(err)
+	}
+
+	errJson := json.NewEncoder(w).Encode(customer)
+	if errJson != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
 }
