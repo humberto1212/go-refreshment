@@ -26,12 +26,11 @@ The project represents the backend of a customer relationship management (CRM) w
 - Open (http://localhost:8000) or use [postman](https://www.postman.com/)
 
 - how to interact with the server?
-
-#### Getting a single customer through a `/customers/{id}` path
-#### Getting all customers through a the `/customers` path
-#### Creating a customer through a `/customers` path
-#### Updating a customer through a `/customers/{id}` path
-#### Deleting a customer through a `/customers/{id}` path
+    - Getting a single customer through a `/customers/{id}` path
+    - Getting all customers through a the `/customers` path
+    - Creating a customer through a `/customers` path
+    - Updating a customer through a `/customers/{id}` path
+    - Deleting a customer through a `/customers/{id}` path
 
 -  create a new customer 
 
