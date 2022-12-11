@@ -8,7 +8,3 @@ type Customer struct {
 	Phone     string  `json:"phone"`
 	Contacted bool    `json:"contacted"`
 }
-
-// type Customers struct {
-// 	Customers []customer
-// }
