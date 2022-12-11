@@ -25,8 +25,8 @@ The project represents the backend of a customer relationship management (CRM) w
     -   HOST=localhost
         PORT=5432
         USER=XXX
-        DBNAME=XXX
-        PASSWORD=XXX
+        DBNAME=XXXX
+        PASSWORD=XXXXX
 
 - In the terminal run `go run main.go`, this start the server.
 
