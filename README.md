@@ -23,16 +23,18 @@ The project represents the backend of a customer relationship management (CRM) w
 
 - In the terminal run `go run main.go`, this start the server.
 
-- Open (http://localhost:8080) or use [postman](https://www.postman.com/)
+- Open (http://localhost:8000) or use [postman](https://www.postman.com/)
 
 - how to interact with the server?
-Getting a single customer through a `/customers/{id}` path
-Getting all customers through a the `/customers` path
-Creating a customer through a `/customers` path
-Updating a customer through a `/customers/{id}` path
-Deleting a customer through a `/customers/{id}` path
+
+#### Getting a single customer through a `/customers/{id}` path
+#### Getting all customers through a the `/customers` path
+#### Creating a customer through a `/customers` path
+#### Updating a customer through a `/customers/{id}` path
+#### Deleting a customer through a `/customers/{id}` path
 
 -  create a new customer 
+
 `
  {
      "id": 4,
