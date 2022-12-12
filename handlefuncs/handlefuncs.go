@@ -13,16 +13,9 @@ import (
 //===================
 // overview of the API
 //===================
-func Overview(w http.ResponseWriter, _ *http.Request) {
+func Overview(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	w.WriteHeader(http.StatusOK)
-
-	fmt.Fprintf(w, "<h2>The project represents the backend of a customer relationship management (CRM) web application.</h2> \n")
-
-	fmt.Fprintf(w, "<h3>	how to interact with the server?</h3> \n")
-
-	fmt.Fprintf(w, "<ul><li>Getting a single customer through a `/customers/{id}` path</li><li>Getting all customers through a `/customers` path</li><li>Creating a customer through a `/customers` path</li><li> Updating a customer through a `/customers/{id}` path </li><li> Deleting a customer through a `/customers/{id}` path </li></ul>")
-
+	http.ServeFile(w, r, "./static/index.html")
 }
 
 //===================
