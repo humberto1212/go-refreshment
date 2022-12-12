@@ -69,12 +69,13 @@ func main() {
 
 	//router.PathPrefix("/").Handler(http.FileServer(http.Dir("./static")))
 	//router.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
-	router.HandleFunc("/", handlefuncs.Overview)
+	//router.HandleFunc("/", handlefuncs.Overview)
 	router.HandleFunc("/customers", handlefuncs.GetAllCustomers).Methods("GET")
 	router.HandleFunc("/customers/{id}", handlefuncs.GetSingleCustomer).Methods("GET")
 	router.HandleFunc("/customers/{id}", handlefuncs.DeleteCustomer).Methods("DELETE")
 	router.HandleFunc("/customers", handlefuncs.CreateCustomer).Methods("POST")
 	router.HandleFunc("/customers/{id}", handlefuncs.UpdateCustomer).Methods("PUT")
+	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./static")))
 
 	muxWithMiddlewares := http.TimeoutHandler(router, time.Second*5, "Timeout!")
 
