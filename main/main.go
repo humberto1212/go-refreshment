@@ -67,6 +67,8 @@ func main() {
 	//======================================
 	router := mux.NewRouter().StrictSlash(true)
 
+	//router.PathPrefix("/").Handler(http.FileServer(http.Dir("./static")))
+	//router.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
 	router.HandleFunc("/", handlefuncs.Overview)
 	router.HandleFunc("/customers", handlefuncs.GetAllCustomers).Methods("GET")
 	router.HandleFunc("/customers/{id}", handlefuncs.GetSingleCustomer).Methods("GET")
