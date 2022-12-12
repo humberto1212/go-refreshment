@@ -13,10 +13,10 @@ import (
 //===================
 // overview of the API
 //===================
-func Overview(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	http.ServeFile(w, r, "./static/index.html")
-}
+// func Overview(w http.ResponseWriter, r *http.Request) {
+// 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+// 	http.ServeFile(w, r, "./static/index.html")
+// }
 
 //===================
 // Get all Customers
