@@ -67,6 +67,7 @@ func main() {
 	//======================================
 	router := mux.NewRouter().StrictSlash(true)
 
+	router.HandleFunc("/", handlefuncs.Overview)
 	router.HandleFunc("/customers", handlefuncs.GetAllCustomers).Methods("GET")
 	router.HandleFunc("/customers/{id}", handlefuncs.GetSingleCustomer).Methods("GET")
 	router.HandleFunc("/customers/{id}", handlefuncs.DeleteCustomer).Methods("DELETE")
